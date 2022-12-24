@@ -18,7 +18,7 @@ export const authApi = createApi({
   endpoints: (builder) => ({
     // done
     signupUser: builder.mutation<void, CreateUserProps>({
-      query: (user) => ({ url: "/signup", method: "post", data: user }),
+      query: (user) => ({ url: "/register", method: "post", data: user }),
       invalidatesTags: ["Auth"],
     }),
     // done
