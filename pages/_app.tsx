@@ -1,4 +1,3 @@
-/// <reference types="styled-components/cssprop" />
 import store from "redux/store/store";
 import { Provider } from "react-redux";
 import Footer from "components/footer";
