@@ -5,7 +5,6 @@ import type { AppProps } from "next/app";
 import { Global } from "utils/globalStyles";
 import { Toaster } from "react-hot-toast";
 import { persistStore } from "redux-persist";
-import {} from "styled-components/cssprop";
 import ResponsiveAppBar from "components/navbar";
 import { PageLoader } from "components/pageLoader";
 import { PersistGate } from "redux-persist/integration/react";
