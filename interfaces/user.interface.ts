@@ -37,7 +37,6 @@ export interface UserProps {
   emailVerificationTokenExpires: string | undefined;
 }
 
-
 export interface EmailProps {
   email: string;
 }
@@ -46,4 +45,14 @@ export interface ResetPasswordProps {
   resetToken: string;
   password: string;
   passwordConfirm: string;
+}
+
+export interface AuthUser {
+  email: string;
+  firstname: string;
+  id: string;
+  isEmailVerified: boolean;
+  lastname: string;
+  photo: string;
+  role: string;
 }

@@ -31,27 +31,27 @@ import {
   categoryTypeCss,
   categorydescCss,
 } from "components/navbar/style";
-import { useAppDispatch, useAppSelector } from "redux/store/store";
+import { toast } from "react-hot-toast";
 import cart from "assets/shared/desktop/icon-cart.svg";
+import { useLogoutUserMutation } from "redux/api/auth.api";
+import { selectAuthUser } from "redux/reducers/authUser.reducer";
 import { categoryGroupCss } from "components/categoryGroup/style";
+import { useAppDispatch, useAppSelector } from "redux/store/store";
 import { RandomlyPositionedModal, Backdrop } from "components/cart/style";
 import speaker from "assets/shared/desktop/image-category-thumbnail-speakers.png";
 import earphones from "assets/shared/desktop/image-category-thumbnail-earphones.png";
 import headphones from "assets/shared/desktop/image-category-thumbnail-headphones.png";
-import { useLogoutUserMutation } from "redux/api/auth.api";
-import { toast } from "react-hot-toast";
-import { selectAuthUser } from "redux/reducers/authUser.reducer";
 
 const ResponsiveAppBar = () => {
   const router = useRouter();
   const loc = useLocation();
   const [open, setOpen] = React.useState(false);
   const { cartProducts } = useAppSelector(({ cartReducer }) => cartReducer);
-  // const { user } = useAppSelector(({ authUserReducer }) => authUserReducer);
-  const greg = useAppSelector((state) => selectAuthUser(state));
-  console.log(greg);
+
+  const user: any = useAppSelector((state) => selectAuthUser(state))[1];
+
   const [logout] = useLogoutUserMutation();
-  const dispatch = useAppDispatch();
+
   const renderBackdrop = (props: any) => <Backdrop {...props} />;
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -80,6 +80,7 @@ const ResponsiveAppBar = () => {
       toast.error("Couldn't log out");
     }
   };
+
   return (
     <AppBar sx={{ backgroundColor: "black", padding: "1rem 0" }} position="sticky">
       <Container sx={{ maxWidth: { xs: "lg", xl: "xl" } }}>
@@ -199,15 +200,18 @@ const ResponsiveAppBar = () => {
 
             <Tooltip title="Open User Panel">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {/* <Avatar
-                  sx={{ fontSize: "2rem", fontWeight: 700 }}
+                <Avatar
+                  sx={{
+                    fontSize: "2rem",
+                    fontWeight: 700,
+                  }}
                   alt={`${user?.firstname?.slice(0, 1)}`}
                   src={user?.photo}
-                /> */}
+                />
               </IconButton>
             </Tooltip>
 
-            {/* {!user ? (
+            {!user?.id ? (
               <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"
@@ -226,7 +230,12 @@ const ResponsiveAppBar = () => {
                       setAnchorElUser(null);
                     }}
                   >
-                    <Box sx={{ display: "flex" }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
                       <IconButton sx={{ fontSize: "3rem" }}>{panel.icon}</IconButton>
                       <Typography fontSize="large" textAlign="center">
                         {panel.name}
@@ -254,7 +263,12 @@ const ResponsiveAppBar = () => {
                       setAnchorElUser(null);
                     }}
                   >
-                    <Box sx={{ display: "flex" }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
                       <IconButton sx={{ fontSize: "3rem" }}>{panel.icon}</IconButton>
                       <Typography fontSize="large" textAlign="center">
                         {panel.name}
@@ -264,7 +278,7 @@ const ResponsiveAppBar = () => {
                 ))}
 
                 <MenuItem onClick={handleLogOutUser}>
-                  <Box sx={{ display: "flex" }}>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
                     <IconButton sx={{ fontSize: "3rem" }}>
                       <LogoutIcon />
                     </IconButton>
@@ -274,7 +288,7 @@ const ResponsiveAppBar = () => {
                   </Box>
                 </MenuItem>
               </Menu>
-            )} */}
+            )}
           </Box>
         </Toolbar>
       </Container>
