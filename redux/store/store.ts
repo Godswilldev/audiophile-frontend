@@ -5,7 +5,7 @@ import rootReducer from "redux/store/rootReducer";
 import { extendedAuthApiSlice } from "redux/reducers/authUser.reducer";
 import storageSession from "redux-persist/lib/storage/session";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { productsApi } from "../api/products.api";
+// import { productsApi } from "../api/products.api";
 
 const persistConfig = {
   key: "root",
@@ -22,8 +22,8 @@ const store = configureStore({
   devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
-      authApi.middleware,
-      productsApi.middleware
+      authApi.middleware
+      // productsApi.middleware
     ),
 });
 
@@ -33,6 +33,6 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export default store;
 
-store.dispatch(productsApi.endpoints.getAllProducts.initiate(null));
+// store.dispatch(productsApi.endpoints.getAllProducts.initiate(null));
 
 store.dispatch(extendedAuthApiSlice.endpoints.verifyCookie.initiate(null));
