@@ -1,31 +1,33 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getLoggedInUser, logoutUser } from "redux/actions/authUser.actions";
+import { authApi } from "redux/api/auth.api";
+import { EntityId, createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 
-export interface AuthUserState {
-  user: {
-    email: string;
-    firstname: string;
-    id: string;
-    isEmailVerified: boolean;
-    lastname: string;
-    photo: string;
-    role: string;
-  } | null;
-}
+const authUserAdapter = createEntityAdapter();
 
-const initialState: AuthUserState = {
-  user: null,
-};
+const initialState = authUserAdapter.getInitialState();
 
-const authReducer = createSlice({
-  name: "authReducer",
-  initialState,
-  reducers: {
-    getAuthUser: getLoggedInUser,
-    logUserOut: logoutUser,
-  },
+export const extendedAuthApiSlice = authApi.injectEndpoints({
+  endpoints: (builder) => ({
+    verifyCookie: builder.query<any, null>({
+      query: () => ({ url: "/verify-cookie", method: "get" }),
+      transformResponse: (responseData: {
+        payload: readonly unknown[] | Record<EntityId, unknown>;
+        type: string;
+      }) => {
+        return authUserAdapter.setAll(initialState, responseData);
+      },
+    }),
+  }),
 });
 
-export const { getAuthUser, logUserOut } = authReducer.actions;
+export const { useVerifyCookieQuery } = extendedAuthApiSlice;
 
-export default authReducer.reducer;
+export const selectAuthUserResult = extendedAuthApiSlice.endpoints.verifyCookie.select(null);
+
+const selectAuthUserData: any = createSelector(
+  selectAuthUserResult,
+  (usersResult) => usersResult.data
+);
+
+export const { selectAll: selectAuthUser } = authUserAdapter.getSelectors(
+  (state) => selectAuthUserData(state) ?? initialState
+);

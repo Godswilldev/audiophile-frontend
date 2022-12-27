@@ -40,14 +40,16 @@ import earphones from "assets/shared/desktop/image-category-thumbnail-earphones.
 import headphones from "assets/shared/desktop/image-category-thumbnail-headphones.png";
 import { useLogoutUserMutation } from "redux/api/auth.api";
 import { toast } from "react-hot-toast";
-import { logUserOut } from "redux/reducers/authUser.reducer";
+import { selectAuthUser } from "redux/reducers/authUser.reducer";
 
 const ResponsiveAppBar = () => {
   const router = useRouter();
   const loc = useLocation();
   const [open, setOpen] = React.useState(false);
   const { cartProducts } = useAppSelector(({ cartReducer }) => cartReducer);
-  const { user } = useAppSelector(({ authUserReducer }) => authUserReducer);
+  // const { user } = useAppSelector(({ authUserReducer }) => authUserReducer);
+  const greg = useAppSelector((state) => selectAuthUser(state));
+  console.log(greg);
   const [logout] = useLogoutUserMutation();
   const dispatch = useAppDispatch();
   const renderBackdrop = (props: any) => <Backdrop {...props} />;
@@ -67,11 +69,11 @@ const ResponsiveAppBar = () => {
 
   const handleLogOutUser = async () => {
     try {
-      const {status} = await logout().unwrap();
+      const { status } = await logout().unwrap();
       setAnchorElUser(null);
       localStorage.setItem("jwt", "");
-      dispatch(logUserOut());
       toast.success(`${status}`);
+      // dispatch(logUserOut());
       router.push("/");
     } catch (error) {
       setAnchorElUser(null);
@@ -197,15 +199,15 @@ const ResponsiveAppBar = () => {
 
             <Tooltip title="Open User Panel">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
+                {/* <Avatar
                   sx={{ fontSize: "2rem", fontWeight: 700 }}
                   alt={`${user?.firstname?.slice(0, 1)}`}
                   src={user?.photo}
-                />
+                /> */}
               </IconButton>
             </Tooltip>
 
-            {!user ? (
+            {/* {!user ? (
               <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"
@@ -272,7 +274,7 @@ const ResponsiveAppBar = () => {
                   </Box>
                 </MenuItem>
               </Menu>
-            )}
+            )} */}
           </Box>
         </Toolbar>
       </Container>

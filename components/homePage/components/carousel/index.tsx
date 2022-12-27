@@ -21,19 +21,19 @@ import {
 export function HeaderCarousel() {
   const { products } = useAppSelector(({ productsReducer }) => productsReducer);
 
-  const newProducts = products.filter((p: ProductsProps) => p.new === true);
+  const newProducts = products?.filter((p: ProductsProps) => p.new === true);
 
   return (
     <Box css={headerCarouselContainer}>
       <Swiper
         spaceBetween={30}
         centeredSlides={true}
-        autoplay={{delay: 5000,disableOnInteraction: false}}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
-        {newProducts.map((product: ProductsProps) => (
-          <SwiperSlide key={product.slug}>
+        {newProducts?.map((product: ProductsProps) => (
+          <SwiperSlide key={product?.slug}>
             <Container sx={{ maxWidth: { xs: "lg", xl: "xl" } }}>
               <Grid
                 container
@@ -46,9 +46,9 @@ export function HeaderCarousel() {
               >
                 <Grid item lg={5} md={6} css={headerTextCss}>
                   <p>New product</p>
-                  <h1>{product.name}</h1>
-                  <h2>{product.description}</h2>
-                  <span onClick={() => router.push(`/product/${product.slug}`)}>
+                  <h1>{product?.name}</h1>
+                  <h2>{product?.description}</h2>
+                  <span onClick={() => router.push(`/product/${product?.slug}`)}>
                     <Button text="see product" variant="PINK_DARK" />
                   </span>
                 </Grid>
@@ -57,8 +57,8 @@ export function HeaderCarousel() {
                   <Image
                     width={550}
                     height={550}
-                    src={product.image.desktop}
-                    alt={`${product.name} image`}
+                    src={product?.image.desktop}
+                    alt={`${product?.name} image`}
                   />
                 </Grid>
               </Grid>
