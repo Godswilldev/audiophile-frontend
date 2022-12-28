@@ -7,7 +7,7 @@ import {
   clearCart,
   incrementQuantity,
   decrementQuantity,
-} from "redux/actions/actions";
+} from "redux/actions/cart.actions";
 import { RootState } from "redux/store/store";
 
 const initialState: CartState = {

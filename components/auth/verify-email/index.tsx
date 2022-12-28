@@ -15,7 +15,7 @@ import { signUpCss } from "components/auth/signup/style";
 import { useVerifyUserEmailMutation } from "redux/api/auth.api";
 import { formLabelCss, textFieldCss } from "components/checkout/style";
 import { useAppDispatch } from "redux/store/store";
-import { getAuthUser } from "redux/reducers/authUser.reducer";
+import { getAuthUser } from "redux/api/extendedAuth.api";
 
 export interface VerifyEmailProps {
   emailToken: string;

@@ -19,7 +19,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { formLabelCss, textFieldCss } from "components/checkout/style";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { getAuthUser } from "redux/reducers/authUser.reducer";
+import { getAuthUser } from "redux/api/extendedAuth.api";
 import { useAppDispatch } from "redux/store/store";
 
 interface ResetPasswordProps {

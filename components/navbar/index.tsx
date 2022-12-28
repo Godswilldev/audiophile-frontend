@@ -34,22 +34,21 @@ import {
 import { toast } from "react-hot-toast";
 import cart from "assets/shared/desktop/icon-cart.svg";
 import { useLogoutUserMutation } from "redux/api/auth.api";
-import { selectAuthUser } from "redux/reducers/authUser.reducer";
 import { categoryGroupCss } from "components/categoryGroup/style";
 import { useAppDispatch, useAppSelector } from "redux/store/store";
 import { RandomlyPositionedModal, Backdrop } from "components/cart/style";
 import speaker from "assets/shared/desktop/image-category-thumbnail-speakers.png";
 import earphones from "assets/shared/desktop/image-category-thumbnail-earphones.png";
 import headphones from "assets/shared/desktop/image-category-thumbnail-headphones.png";
+import { removeAuthUser } from "redux/reducers/auth.reducer";
 
 const ResponsiveAppBar = () => {
   const router = useRouter();
   const loc = useLocation();
+  const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
   const { cartProducts } = useAppSelector(({ cartReducer }) => cartReducer);
-
-  const user: any = useAppSelector((state) => selectAuthUser(state))[1];
-
+  const { user } = useAppSelector(({ authReducer }) => authReducer);
   const [logout] = useLogoutUserMutation();
 
   const renderBackdrop = (props: any) => <Backdrop {...props} />;
@@ -71,9 +70,8 @@ const ResponsiveAppBar = () => {
     try {
       const { status } = await logout().unwrap();
       setAnchorElUser(null);
-      localStorage.setItem("jwt", "");
       toast.success(`${status}`);
-      // dispatch(logUserOut());
+      dispatch(removeAuthUser());
       router.push("/");
     } catch (error) {
       setAnchorElUser(null);
@@ -205,7 +203,7 @@ const ResponsiveAppBar = () => {
                     fontSize: "2rem",
                     fontWeight: 700,
                   }}
-                  alt={`${user?.firstname?.slice(0, 1)}`}
+                  alt={`${user?.firstname?.slice(0, 1)?.toUpperCase()}`}
                   src={user?.photo}
                 />
               </IconButton>

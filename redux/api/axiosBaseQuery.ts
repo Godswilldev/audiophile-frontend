@@ -35,6 +35,7 @@ export const axiosBaseQuery =
         headers: {
           Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt") as string)}`,
         },
+        withCredentials: true,
       });
       return { data: result.data };
     } catch (axiosError) {

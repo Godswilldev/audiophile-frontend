@@ -20,8 +20,8 @@ import { useLoginUserMutation } from "redux/api/auth.api";
 import { LoginUserProps } from "interfaces/user.interface";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { formLabelCss, textFieldCss } from "components/checkout/style";
-import { getAuthUser } from "redux/reducers/authUser.reducer";
 import { useAppDispatch } from "redux/store/store";
+import { setAuthUser } from "redux/reducers/auth.reducer";
 
 interface ILoginUser extends LoginUserProps {
   showPassword: boolean;
@@ -53,8 +53,8 @@ const Login = () => {
         email: values.email,
         password: values.password,
       }).unwrap();
-      localStorage.setItem("jwt", JSON.stringify(token));
-      dispatch(getAuthUser({ user: data }));
+
+      dispatch(setAuthUser({ jwt: token, user: data.user }));
       toast.success("Login Successful");
       setSubmitting(false);
       router.push("/");
@@ -65,7 +65,7 @@ const Login = () => {
   };
 
   return (
-    <Container css={signUpCss}  sx={{ marginBottom: "15rem" }}>
+    <Container css={signUpCss} sx={{ marginBottom: "15rem" }}>
       <h1>Login</h1>
       <Formik
         initialValues={loginValues}

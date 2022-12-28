@@ -2,9 +2,10 @@ import { authApi } from "redux/api/auth.api";
 import { persistReducer } from "redux-persist";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "redux/store/rootReducer";
-import { extendedAuthApiSlice } from "redux/reducers/authUser.reducer";
 import storageSession from "redux-persist/lib/storage/session";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import {  setAuthUser } from "redux/reducers/auth.reducer";
+import { transport } from "redux/api/axiosBaseQuery";
 // import { productsApi } from "../api/products.api";
 
 const persistConfig = {
@@ -34,5 +35,21 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export default store;
 
 // store.dispatch(productsApi.endpoints.getAllProducts.initiate(null));
+// store.dispatch(extendedAuthApiSlice.endpoints.verifyCookie.initiate(null));
 
-store.dispatch(extendedAuthApiSlice.endpoints.verifyCookie.initiate(null));
+const verify = async () => {
+  try {
+    const { data } = await transport({
+      url: "/auth/verify-cookie",
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt") as string)}`,
+      },
+    });
+    store.dispatch(setAuthUser({ user: data.data, jwt: data.token }));
+  } catch (err) {
+    console.log("not authenticated");
+  }
+};
+
+store.dispatch(verify);
