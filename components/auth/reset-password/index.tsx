@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { useTitle } from "react-use";
 import toast from "react-hot-toast";
 import Button from "components/buttons";
@@ -8,19 +9,18 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Container from "@mui/material/Container";
 import InputLabel from "@mui/material/InputLabel";
 import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import { useAppDispatch } from "redux/store/store";
 import { Formik, Form, FormikHelpers } from "formik";
 import { ResetPasswordSchema } from "utils/yupSchema";
 import Visibility from "@mui/icons-material/Visibility";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { signUpCss } from "components/auth/signup/style";
 import InputAdornment from "@mui/material/InputAdornment";
+import { setAuthUser } from "redux/reducers/auth.reducer";
 import { useResetPasswordMutation } from "redux/api/auth.api";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { formLabelCss, textFieldCss } from "components/checkout/style";
-import Typography from "@mui/material/Typography";
-import Link from "next/link";
-import { getAuthUser } from "redux/api/extendedAuth.api";
-import { useAppDispatch } from "redux/store/store";
 
 interface ResetPasswordProps {
   resetPasswordCode: string;
@@ -60,15 +60,15 @@ const ResetPassword = () => {
     { setSubmitting }: FormikHelpers<ResetPasswordProps>
   ) => {
     try {
-      const { data } = await resetPassword({
+      const { data, token } = await resetPassword({
         resetToken: values.resetPasswordCode,
         password: values.newPassword,
         passwordConfirm: values.confirmNewPassword,
       }).unwrap();
+
       toast.success("Password Changed Successfully");
       setSubmitting(false);
-      localStorage.setItem("jwt", JSON.stringify(data.token));
-      dispatch(getAuthUser({ user: data.data }));
+      dispatch(setAuthUser({ jwt: token, user: data.user }));
       router.push("/");
     } catch (error: any) {
       toast.error(`Error: Invalid Reset Password Code`);

@@ -9,13 +9,13 @@ import Grid from "@mui/material/Unstable_Grid2";
 import Container from "@mui/material/Container";
 import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
+import { useAppDispatch } from "redux/store/store";
 import { Formik, Form, FormikHelpers } from "formik";
 import { VerificationCodeSchema } from "utils/yupSchema";
 import { signUpCss } from "components/auth/signup/style";
+import { setAuthUser } from "redux/reducers/auth.reducer";
 import { useVerifyUserEmailMutation } from "redux/api/auth.api";
 import { formLabelCss, textFieldCss } from "components/checkout/style";
-import { useAppDispatch } from "redux/store/store";
-import { getAuthUser } from "redux/api/extendedAuth.api";
 
 export interface VerifyEmailProps {
   emailToken: string;
@@ -37,9 +37,7 @@ const VerifyEmail = () => {
   ) => {
     try {
       const { data, token } = await verifyUser({ emailToken: values.emailToken }).unwrap();
-
-      localStorage.setItem("jwt", JSON.stringify(token));
-      dispatch(getAuthUser({ user: data.user }));
+      dispatch(setAuthUser({ jwt: token, user: data.user }));
       toast.success("Email Verified");
       setSubmitting(false);
       setVerificationToken({ emailToken: "" });
