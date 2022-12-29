@@ -12,8 +12,8 @@ const backgroundCss = css`
   text-align: center;
   align-items: center;
   justify-content: center;
-  /* background: white; */
-  background: ${colors.colorDarkPink};
+  background: white;
+  /* background: ${colors.colorDarkPink}; */
 `;
 
 const containerCss = css`
@@ -41,7 +41,7 @@ export const PageLoader = () => {
     <Box css={LoadingComp}>
       <Box css={containerCss}>
         <Box css={backgroundCss}>
-          <CircularProgress size={"2rem"} color="primary" disableShrink />
+          <CircularProgress size={"4rem"} color="primary" disableShrink />
         </Box>
       </Box>
     </Box>

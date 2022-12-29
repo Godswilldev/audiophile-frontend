@@ -54,7 +54,7 @@ const Cart = ({ setOpen }: closeCart) => {
                   <Image
                     width={64}
                     height={64}
-                    src={product.product.categoryImage.desktop}
+                    src={product.product.categoryImage}
                     alt={`${product.id} image`}
                     css={"border-radius:1rem"}
                   />
