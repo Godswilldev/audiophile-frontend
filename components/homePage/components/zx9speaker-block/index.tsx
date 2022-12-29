@@ -27,7 +27,7 @@ const Z9Speaker = () => {
         </h1>
 
         <Typography>
-          Upgrade to premium speakers that are <br /> phenomenally built to deliver truly remarkable
+          Upgrade to premium speakers that are <br /> phenomenally built to deliver truly remarkable{" "}
           <br /> sound.
         </Typography>
 
