@@ -58,8 +58,6 @@ export interface ProductsProps {
   };
 }
 
-
-
 export type updateQtyProps = {
   type: "INCREMENT" | "DECREMENT";
   id: string;
@@ -92,13 +90,12 @@ export interface CurrentProductProps {
 export interface FormValuesProps {
   fullName: string;
   email: string;
-  phoneNumber: number | null|undefined;
+  phoneNumber: number | null | undefined;
   address: string;
-  zipCode: number | null|undefined;
+  zipCode: number | null | undefined;
   city: string;
   country: string;
   paymentMethod: string;
-      eMoneyNumber: null|undefined;
-    eMoneyPin:null|undefined;
-
+  eMoneyNumber: null | undefined;
+  eMoneyPin: null | undefined;
 }
