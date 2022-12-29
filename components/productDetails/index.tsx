@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Box from "@mui/material/Box";
-import { useTitle } from "react-use";
 import { toast } from "react-hot-toast";
 import Button from "components/buttons";
 import { useRouter } from "next/router";
@@ -8,20 +7,19 @@ import { useState, useEffect } from "react";
 import BestAudio from "components/bestAudio";
 import Grid from "@mui/material/Unstable_Grid2";
 import Container from "@mui/material/Container";
+import { ProductProps } from "interfaces/products";
 import CategoryGroup from "components/categoryGroup";
+import { cartProductType } from "interfaces/interfaces";
 import { addItemToCart } from "redux/reducers/cartReducer";
 import { useAppDispatch, useAppSelector } from "redux/store/store";
-import ProductPreview from "components/productPreview/productPreview";
-import { cartProductType } from "interfaces/interfaces";
+import ProductPreviewGroup from "components/productPreview/productPreviewGroup";
 import {
+  imagesCss,
   productCss,
+  featuresCss,
   goBackButton,
   productDescCss,
-  featuresCss,
-  imagesCss,
 } from "components/productDetails/style";
-import { ProductProps } from "interfaces/products";
-import ProductPreviewGroup from "../productPreview/productPreviewGroup";
 
 const ProductDetail = (product: ProductProps) => {
   const router = useRouter();
@@ -120,6 +118,8 @@ const ProductDetail = (product: ProductProps) => {
               priority={true}
               src={product?.productImageGallery[0]}
               alt={`${product.name} image`}
+              width={445}
+              height={280}
             />
           </Box>
 
@@ -127,6 +127,8 @@ const ProductDetail = (product: ProductProps) => {
             priority={true}
             src={product?.productImageGallery[1]}
             alt={`${product.name} image`}
+            width={445}
+            height={280}
           />
         </Box>
 
@@ -135,6 +137,8 @@ const ProductDetail = (product: ProductProps) => {
           css={"padding-left: 5rem"}
           src={product?.productImageGallery[2]}
           alt={`${product.name} image`}
+          width={635}
+          height={592}
         />
       </Box>
 
