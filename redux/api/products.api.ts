@@ -14,7 +14,7 @@ export const productsApi = createApi({
       query: () => ({ url: "/", method: "get" }),
     }),
 
-    getOneProduct: builder.query<ProductProps, string>({
+    getOneProduct: builder.query<{ data: ProductProps }, string>({
       query: (id: string) => ({ method: "get", url: `/${id}` }),
     }),
   }),

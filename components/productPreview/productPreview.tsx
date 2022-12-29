@@ -8,9 +8,10 @@ interface ProductPreviewProps {
   text: string;
   image: any;
   slug: string;
+  id: string;
 }
 
-const ProductPreview = ({ text, image, slug }: ProductPreviewProps) => {
+const ProductPreview = ({ text, image, id }: ProductPreviewProps) => {
   const router = useRouter();
 
   return (
@@ -23,7 +24,7 @@ const ProductPreview = ({ text, image, slug }: ProductPreviewProps) => {
           <h1>{text.toUpperCase()}</h1>
 
           <Button
-            onClick={() => router.push(`/product/${slug}`)}
+            onClick={() => router.push(`/product/${id}`)}
             text="see product"
             variant="PINK_DARK"
           />

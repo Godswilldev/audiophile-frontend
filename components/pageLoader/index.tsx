@@ -12,7 +12,8 @@ const backgroundCss = css`
   text-align: center;
   align-items: center;
   justify-content: center;
-  background: white;
+  /* background: white; */
+  background: ${colors.colorDarkPink};
 `;
 
 const containerCss = css`
@@ -32,14 +33,15 @@ export const LoadingComp = css`
   z-index: 100000;
   position: fixed;
   background: ${colors.colorDarkPink};
+  /* background: transparent; */
 `;
 
 export const PageLoader = () => {
   return (
     <Box css={LoadingComp}>
-      <Box css={containerCss} data-cy="general-loader">
+      <Box css={containerCss}>
         <Box css={backgroundCss}>
-          <CircularProgress disableShrink />
+          <CircularProgress size={"2rem"} color="primary" disableShrink />
         </Box>
       </Box>
     </Box>

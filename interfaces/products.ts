@@ -15,7 +15,7 @@ export interface ProductProps {
   image: string;
   description: string;
   features: string;
-  productImageGallery: [string];
+  productImageGallery: [string, string, string];
   ratingsAverage: number;
   ratingsQuantity: number;
   categoryImage: string;

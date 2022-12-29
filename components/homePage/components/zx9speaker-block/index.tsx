@@ -32,7 +32,7 @@ const Z9Speaker = () => {
         </Typography>
 
         <Button
-          onClick={() => router.push("/product/zx9-speaker")}
+          onClick={() => router.push("/product/63a9cbd0560efe584f871d48")}
           text="see product"
           variant="BLACK"
         />

@@ -59,7 +59,6 @@ const getAllProducts = async () => {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt") as string)}`,
       },
     });
-    console.log(data.data);
     store.dispatch(setProducts({ products: data.data.products }));
   } catch (error) {
     console.log(`Couldn't get Products ${error}`);

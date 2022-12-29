@@ -15,7 +15,7 @@ const Zx7Speaker = () => {
         <h1>ZX7 SPEAKER</h1>
 
         <Button
-          onClick={() => router.push("/product/zx7-speaker")}
+          onClick={() => router.push("/product/63a9cb28560efe584f871d43")}
           text="see product"
           variant="BORDERED"
         />

@@ -48,9 +48,11 @@ export function HeaderCarousel() {
                   <p>New product</p>
                   <h1>{product?.name}</h1>
                   <h2>{product?.description}</h2>
-                  <span onClick={() => router.push(`/product/${product?.slug}`)}>
-                    <Button text="see product" variant="PINK_DARK" />
-                  </span>
+                  <Button
+                    onClick={() => router.push(`/product/${product?.id}`)}
+                    text="see product"
+                    variant="PINK_DARK"
+                  />
                 </Grid>
 
                 <Grid item lg={7} md={6} css={gridItemImageCss}>

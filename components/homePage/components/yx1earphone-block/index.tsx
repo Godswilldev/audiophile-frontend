@@ -18,7 +18,7 @@ const Yx1Earphone = () => {
         <h1>YX1 EARPHONES</h1>
 
         <Button
-          onClick={() => router.push("/product/yx1-earphones")}
+          onClick={() => router.push("/product/63a9c7fb377e040d7a46f57d")}
           text="see product"
           variant="BORDERED"
         />
