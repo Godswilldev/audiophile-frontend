@@ -1,19 +1,19 @@
 import Box from "@mui/material/Box";
 import BestAudio from "components/bestAudio";
 import Container from "@mui/material/Container";
+import { useLocation, useTitle } from "react-use";
+import { ProductProps } from "interfaces/products";
 import { useAppSelector } from "redux/store/store";
-import { ProductsProps } from "interfaces/interfaces";
+import CategoryGroup from "components/categoryGroup";
 import CategoryProduct from "components/categoryProduct/categoryProduct";
 import { categoryPageCss, categoryHeaderCss } from "components/categoryPage/style";
-import CategoryGroup from "components/categoryGroup";
-import { useLocation, useTitle } from "react-use";
 
 const Category = () => {
   const location = useLocation();
   const routeName = location?.pathname?.slice(1);
   useTitle(`${routeName?.toUpperCase()} | AUDIOPHILE`);
   const { products } = useAppSelector(({ productsReducer }) => productsReducer);
-  const category = products.filter((product: ProductsProps) => product.category === routeName);
+  const category = products.filter((product: ProductProps) => product.category === routeName);
 
   return (
     <Box css={categoryPageCss}>
@@ -24,7 +24,7 @@ const Category = () => {
       <Container sx={{ maxWidth: { xs: "lg", xl: "xl" } }}>
         <Box>
           {category.map((cat, idx) => (
-            <Box key={cat.slug}>
+            <Box key={cat.id}>
               <CategoryProduct idx={idx} cat={cat} />
             </Box>
           ))}

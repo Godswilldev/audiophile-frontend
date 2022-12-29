@@ -3,11 +3,11 @@ import Button from "components/buttons";
 import { useRouter } from "next/router";
 import { css } from "styled-components/macro";
 import Grid from "@mui/material/Unstable_Grid2";
-import { ProductsProps } from "interfaces/interfaces";
 import { body, h1, h2, lightText } from "utils/typography";
+import { ProductProps } from "interfaces/products";
 
 interface categoryProp {
-  cat: ProductsProps;
+  cat: ProductProps;
   idx: number;
 }
 
@@ -45,7 +45,7 @@ const CategoryProduct = ({ cat, idx }: categoryProp) => {
       sx={{ margin: { xs: "7rem 0", sm: "13rem 0" } }}
     >
       <Grid xs={12} sm={6} sx={{ margin: { xs: "5rem 0", sm: 0 } }}>
-        <Image width={540} height={560} src={cat.categoryImage.desktop} alt={`${cat.name} image`} />
+        <Image width={540} height={560} src={cat.categoryImage} alt={`${cat.name} image`} />
       </Grid>
 
       <Grid sx={{ paddingLeft: { xs: 0, sm: "3rem" } }} xs={12} sm={6} css={categoryProductDescCss}>
@@ -56,7 +56,7 @@ const CategoryProduct = ({ cat, idx }: categoryProp) => {
         <p>{cat.description}</p>
 
         <Button
-          onClick={() => router.push(`/product/${cat.slug}`)}
+          onClick={() => router.push(`/product/${cat.id}`)}
           text="see product"
           variant="PINK_DARK"
         />
