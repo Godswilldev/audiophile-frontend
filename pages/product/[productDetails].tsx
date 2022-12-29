@@ -16,19 +16,15 @@ const ProductDetailpage = () => {
   useTitle("Audiophile | Product Details");
   const router = useRouter();
 
-  const { data, isLoading, isError, isFetching } = useGetOneProductQuery(
-    router.query?.productDetails as string
-  );
+  const { data, isError } = useGetOneProductQuery(router.query?.productDetails as string, {
+    skip: router.query.productDetails === undefined,
+  });
 
-  if (isLoading || isFetching) {
-    return <PageLoader />;
-  } else {
-    return data !== undefined && data.data._id && !isError ? (
-      <ProductDetailComponent {...data.data} />
-    ) : (
-      <NotFound />
-    );
-  }
+  return data !== undefined && data.data._id && !isError ? (
+    <ProductDetailComponent {...data.data} />
+  ) : (
+    <NotFound />
+  );
 };
 
 export default ProductDetailpage;

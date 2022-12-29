@@ -2,8 +2,8 @@ import axios from "axios";
 import type { BaseQueryFn } from "@reduxjs/toolkit/query";
 import type { AxiosRequestConfig, AxiosError } from "axios";
 
-// export const API_URL = "https://audiophile.up.railway.app/api/v1";
-export const API_URL = "http://127.0.0.1:9898/api/v1";
+export const API_URL = "https://audiophile.up.railway.app/api/v1";
+// export const API_URL = "http://127.0.0.1:9898/api/v1";
 
 export const transport = axios.create({
   withCredentials: true,
