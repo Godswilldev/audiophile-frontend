@@ -13,6 +13,7 @@ import { cartProductType } from "interfaces/interfaces";
 import { addItemToCart } from "redux/reducers/cartReducer";
 import { useAppDispatch, useAppSelector } from "redux/store/store";
 import ProductPreviewGroup from "components/productPreview/productPreviewGroup";
+import { useTitle } from "react-use";
 import {
   imagesCss,
   productCss,
@@ -20,28 +21,39 @@ import {
   goBackButton,
   productDescCss,
 } from "components/productDetails/style";
+import { useGetOneProductQuery } from "redux/api/products.api";
 
-const ProductDetail = (product: ProductProps) => {
+const ProductDetail = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [quantity, setQuantity] = useState<number>(1);
   const { cartProducts } = useAppSelector(({ cartReducer }) => cartReducer);
 
-  useEffect(() => setQuantity(quantity), [quantity]);
+  const { data: product } = useGetOneProductQuery(router.query?.productDetails as string, {
+    skip: router.query.productDetails === undefined,
+  });
+
+  useEffect(() => setQuantity(quantity), [router, quantity]);
+
+  useTitle(`Audiophile | ${product?.slug}`);
 
   const addProductToCart = () => {
-    if (cartProducts.map((product: cartProductType) => product.id).includes(product.id)) {
-      toast.error(`${product?.name} is already in cart`);
+    if (product === undefined) {
       return;
     } else {
-      dispatch(
-        addItemToCart({
-          id: product.id,
-          quantity,
-          product,
-        })
-      );
-      toast.success(`${product?.name} added to cart`);
+      if (cartProducts.map((prod: cartProductType) => prod.id).includes(product.slug)) {
+        toast.error(`${product?.name} is already in cart`);
+        return;
+      } else {
+        dispatch(
+          addItemToCart({
+            id: product.slug,
+            quantity,
+            product: product,
+          })
+        );
+        toast.success(`${product?.name} added to cart`);
+      }
     }
   };
 
@@ -55,8 +67,8 @@ const ProductDetail = (product: ProductProps) => {
         <Grid xs={12} sm={5} md={6}>
           <Image
             priority={true}
-            src={product?.categoryImage}
-            alt={`${product.name} image`}
+            src={product !== undefined ? product?.categoryImage : ""}
+            alt={`${product?.name} image`}
             width={540}
             height={560}
             css={"border-radius:1rem"}
@@ -95,7 +107,7 @@ const ProductDetail = (product: ProductProps) => {
             sx={{ paddingLeft: { xs: 0, sm: "5rem" }, marginTop: { xs: "5rem", sm: 0 } }}
           >
             <h2>In the Box</h2>
-            {product.includedItems.map((p: { quantity: number; item: string }) => (
+            {product?.includedItems.map((p: { quantity: number; item: string }) => (
               <p key={p.item}>
                 <span>{p.quantity}X</span> {p.item}
               </p>
@@ -116,8 +128,8 @@ const ProductDetail = (product: ProductProps) => {
           <Box sx={{ paddingRight: { xs: "3rem", md: 0 } }}>
             <Image
               priority={true}
-              src={product?.productImageGallery[0]}
-              alt={`${product.name} image`}
+              src={product !== undefined ? product?.productImageGallery[0] : ""}
+              alt={`${product?.name} image`}
               width={445}
               height={280}
             />
@@ -125,8 +137,8 @@ const ProductDetail = (product: ProductProps) => {
 
           <Image
             priority={true}
-            src={product?.productImageGallery[1]}
-            alt={`${product.name} image`}
+            src={product !== undefined ? product?.productImageGallery[1] : ""}
+            alt={`${product?.name} image`}
             width={445}
             height={280}
           />
@@ -135,8 +147,8 @@ const ProductDetail = (product: ProductProps) => {
         <Image
           priority={true}
           css={"padding-left: 5rem"}
-          src={product?.productImageGallery[2]}
-          alt={`${product.name} image`}
+          src={product !== undefined ? product?.productImageGallery[2] : ""}
+          alt={`${product?.name} image`}
           width={635}
           height={592}
         />

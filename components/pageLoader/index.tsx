@@ -41,7 +41,7 @@ export const PageLoader = () => {
     <Box css={LoadingComp}>
       <Box css={containerCss}>
         <Box css={backgroundCss}>
-          <CircularProgress size={"4rem"} color="primary" disableShrink />
+          <CircularProgress disableShrink />
         </Box>
       </Box>
     </Box>
