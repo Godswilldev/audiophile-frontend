@@ -1,3 +1,4 @@
+import { HYDRATE } from "next-redux-wrapper";
 import { ProductProps } from "interfaces/products";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { axiosBaseQuery } from "redux/api/axiosBaseQuery";
@@ -9,8 +10,14 @@ export const productsApi = createApi({
 
   baseQuery: axiosBaseQuery({ baseUrl: "/products" }),
 
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath];
+    }
+  },
+
   endpoints: (builder) => ({
-    getAllProducts: builder.query<ProductProps[], null>({
+    getAllProducts: builder.query<ProductProps[], void>({
       query: () => ({ url: "/", method: "get" }),
     }),
 
@@ -21,4 +28,12 @@ export const productsApi = createApi({
   }),
 });
 
-export const { useGetAllProductsQuery, useGetOneProductQuery } = productsApi;
+// Export hooks for usage in functional components
+export const {
+  useGetAllProductsQuery,
+  useGetOneProductQuery,
+  util: { getRunningOperationPromises },
+} = productsApi;
+
+// export endpoints for use in SSR
+export const { getAllProducts, getOneProduct } = productsApi.endpoints;

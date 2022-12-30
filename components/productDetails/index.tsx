@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import { toast } from "react-hot-toast";
 import Button from "components/buttons";
 import { useRouter } from "next/router";
@@ -11,9 +12,8 @@ import { ProductProps } from "interfaces/products";
 import CategoryGroup from "components/categoryGroup";
 import { cartProductType } from "interfaces/interfaces";
 import { addItemToCart } from "redux/reducers/cartReducer";
-import { useAppDispatch, useAppSelector } from "redux/store/store";
+import { useAppDispatch, useAppSelector, wrapper } from "redux/store/store";
 import ProductPreviewGroup from "components/productPreview/productPreviewGroup";
-import { useTitle } from "react-use";
 import {
   imagesCss,
   productCss,
@@ -21,7 +21,11 @@ import {
   goBackButton,
   productDescCss,
 } from "components/productDetails/style";
-import { useGetOneProductQuery } from "redux/api/products.api";
+import {
+  getOneProduct,
+  getRunningOperationPromises,
+  useGetOneProductQuery,
+} from "redux/api/products.api";
 
 const ProductDetail = () => {
   const router = useRouter();
@@ -29,8 +33,13 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState<number>(1);
   const { cartProducts } = useAppSelector(({ cartReducer }) => cartReducer);
 
-  const { data: product } = useGetOneProductQuery(router.query?.productDetails as string, {
-    skip: router.query.productDetails === undefined,
+  const {
+    data: product,
+    isLoading,
+    error,
+    isError,
+  } = useGetOneProductQuery(router.query?.productDetails as string, {
+    skip: router.isFallback || router.query.productDetails === undefined,
   });
 
   useEffect(() => setQuantity(quantity), [router, quantity]);
@@ -49,7 +58,7 @@ const ProductDetail = () => {
           addItemToCart({
             id: product.slug,
             quantity,
-            product: product,
+            product,
           })
         );
         toast.success(`${product?.name} added to cart`);
@@ -67,7 +76,8 @@ const ProductDetail = () => {
         <Grid xs={12} sm={5} md={6}>
           <Image
             priority={true}
-            src={product !== undefined ? product?.categoryImage : ""}
+            // src={product !== undefined ? product?.categoryImage : ""}
+            src={product?.categoryImage}
             alt={`${product?.name} image`}
             width={540}
             height={560}
@@ -128,7 +138,7 @@ const ProductDetail = () => {
           <Box sx={{ paddingRight: { xs: "3rem", md: 0 } }}>
             <Image
               priority={true}
-              src={product !== undefined ? product?.productImageGallery[0] : ""}
+              src={product?.productImageGallery[0]}
               alt={`${product?.name} image`}
               width={445}
               height={280}
@@ -137,7 +147,7 @@ const ProductDetail = () => {
 
           <Image
             priority={true}
-            src={product !== undefined ? product?.productImageGallery[1] : ""}
+            src={product?.productImageGallery[1]}
             alt={`${product?.name} image`}
             width={445}
             height={280}
@@ -147,7 +157,7 @@ const ProductDetail = () => {
         <Image
           priority={true}
           css={"padding-left: 5rem"}
-          src={product !== undefined ? product?.productImageGallery[2] : ""}
+          src={product?.productImageGallery[2]}
           alt={`${product?.name} image`}
           width={635}
           height={592}
@@ -176,3 +186,17 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
+  console.log(context);
+  const productDetails = context.params?.productDetails;
+  if (typeof productDetails === "string") {
+    store.dispatch(getOneProduct.initiate(productDetails));
+  }
+
+  await Promise.all(getRunningOperationPromises());
+
+  return {
+    props: {},
+  };
+});
