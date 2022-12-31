@@ -8,7 +8,7 @@ import { CheckoutSchema } from "utils/yupSchema";
 import { useAppSelector } from "redux/store/store";
 import cashOnDelivery from "assets/cart/cash on delivery.png";
 import { Formik, Form, FormikHelpers, FastField } from "formik";
-import { cartProductType, FormValuesProps } from "interfaces/interfaces";
+import { cartProductType } from "interfaces/interfaces";
 import { getTotalPrice, grandTotal, shipping, vat } from "redux/reducers/cartReducer";
 import {
   methodCss,
@@ -23,6 +23,7 @@ import {
   checkoutContainer,
   paymentContainerCss,
 } from "components/checkout/style";
+import { FormValuesProps } from "interfaces/form.interface";
 
 const Checkout = () => {
   const router = useRouter();
