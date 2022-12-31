@@ -2,7 +2,6 @@ import { authApi } from "redux/api/auth.api";
 import { persistReducer } from "redux-persist";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "redux/store/rootReducer";
-import { createWrapper } from "next-redux-wrapper";
 import { productsApi } from "redux/api/products.api";
 import { transport } from "redux/api/axiosBaseQuery";
 import { setAuthUser } from "redux/reducers/auth.reducer";
@@ -20,25 +19,24 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const makeStore = () =>
-  configureStore({
-    reducer: persistedReducer,
-    devTools: process.env.NODE_ENV !== "production",
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({ serializableCheck: false }).concat(
-        authApi.middleware,
-        productsApi.middleware
-      ),
-  });
+export const store = configureStore({
+  reducer: persistedReducer,
+  devTools: process.env.NODE_ENV !== "production",
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }).concat(
+      authApi.middleware,
+      productsApi.middleware
+    ),
+});
 
-export type AppStore = ReturnType<typeof makeStore>;
-export type RootState = ReturnType<AppStore["getState"]>;
-export type AppDispatch = AppStore["dispatch"];
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 // Hooks to be used in functional components
-export const useAppDispatch = () => useDispatch<AppDispatch>();
+// export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });
+export default store;
 
 const verify = async () => {
   try {
@@ -49,7 +47,7 @@ const verify = async () => {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt") as string)}`,
       },
     });
-    // store.dispatch(setAuthUser({ user: data.data, jwt: data.token }));
+    store.dispatch(setAuthUser({ user: data.data, jwt: data.token }));
   } catch (err) {
     console.log("not authenticated");
   }
@@ -64,11 +62,11 @@ const getAllProducts = async () => {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt") as string)}`,
       },
     });
-    // store.dispatch(setProducts({ products: data.data.products }));
+    store.dispatch(setProducts({ products: data.data.products }));
   } catch (error) {
     console.log(`Couldn't get Products ${error}`);
   }
 };
 
-// store.dispatch(getAllProducts);
-// store.dispatch(verify);
+store.dispatch(getAllProducts);
+store.dispatch(verify);

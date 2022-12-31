@@ -9,10 +9,11 @@ import BestAudio from "components/bestAudio";
 import Grid from "@mui/material/Unstable_Grid2";
 import Container from "@mui/material/Container";
 import { ProductProps } from "interfaces/products";
+import { PageLoader } from "components/pageLoader";
 import CategoryGroup from "components/categoryGroup";
 import { cartProductType } from "interfaces/interfaces";
 import { addItemToCart } from "redux/reducers/cartReducer";
-import { useAppDispatch, useAppSelector, wrapper } from "redux/store/store";
+import { useAppDispatch, useAppSelector } from "redux/store/store";
 import ProductPreviewGroup from "components/productPreview/productPreviewGroup";
 import {
   imagesCss,
@@ -21,11 +22,7 @@ import {
   goBackButton,
   productDescCss,
 } from "components/productDetails/style";
-import {
-  getOneProduct,
-  getRunningOperationPromises,
-  useGetOneProductQuery,
-} from "redux/api/products.api";
+import { useGetOneProductQuery } from "redux/api/products.api";
 
 const ProductDetail = () => {
   const router = useRouter();
@@ -36,7 +33,6 @@ const ProductDetail = () => {
   const {
     data: product,
     isLoading,
-    error,
     isError,
   } = useGetOneProductQuery(router.query?.productDetails as string, {
     skip: router.isFallback || router.query.productDetails === undefined,
@@ -66,7 +62,9 @@ const ProductDetail = () => {
     }
   };
 
-  return (
+  return isLoading || product === undefined || isError ? (
+    <PageLoader />
+  ) : (
     <Container sx={{ maxWidth: { xs: "lg", xl: "xl" } }} css={productCss}>
       <h1 onClick={() => router.back()} css={goBackButton}>
         Go Back
@@ -76,7 +74,6 @@ const ProductDetail = () => {
         <Grid xs={12} sm={5} md={6}>
           <Image
             priority={true}
-            // src={product !== undefined ? product?.categoryImage : ""}
             src={product?.categoryImage}
             alt={`${product?.name} image`}
             width={540}
@@ -186,17 +183,3 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
-
-export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
-  console.log(context);
-  const productDetails = context.params?.productDetails;
-  if (typeof productDetails === "string") {
-    store.dispatch(getOneProduct.initiate(productDetails));
-  }
-
-  await Promise.all(getRunningOperationPromises());
-
-  return {
-    props: {},
-  };
-});
