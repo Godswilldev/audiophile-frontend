@@ -6,41 +6,35 @@ import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import { CheckoutSchema } from "utils/yupSchema";
 import { useAppSelector } from "redux/store/store";
+import { Formik, Form, FormikHelpers } from "formik";
 import { cartProductType } from "interfaces/interfaces";
 import { FormValuesProps } from "interfaces/form.interface";
-import cashOnDelivery from "assets/cart/cash on delivery.png";
-import { Formik, Form, FormikHelpers, FastField } from "formik";
 import { getTotalPrice, grandTotal, shipping, vat } from "redux/reducers/cartReducer";
 import {
-  methodCss,
   formLabelCss,
   textFieldCss,
   backButtonCss,
   summaryGridCss,
   checkoutTextCss,
   sectionTitleCss,
-  paymentMethodCss,
-  cashOnDeliveryCss,
   checkoutContainer,
-  paymentContainerCss,
 } from "components/checkout/style";
 import { useGetCheckoutSessionMutation } from "redux/api/order.api";
-import { OrderProps } from "interfaces/orders.interface";
+import toast from "react-hot-toast";
 
 const Checkout = () => {
   const router = useRouter();
   const vatPrice = useAppSelector(vat);
   const total = useAppSelector(getTotalPrice);
   const shippingPrice = useAppSelector(shipping);
-  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
   const { cartProducts } = useAppSelector(({ cartReducer }) => cartReducer);
   const grandTotalPrice = useAppSelector(() => grandTotal(total, vatPrice, shippingPrice));
-  const [getCheckoutSession, { isLoading, data, isError }] = useGetCheckoutSessionMutation();
+  const [getCheckoutSession, { isLoading }] = useGetCheckoutSessionMutation();
 
   const initialvalues: FormValuesProps = {
     fullName: "",
     email: "",
-    phoneNumber: null,
+    phoneNumber: "",
     address: "",
     zipCode: "",
     city: "",
@@ -52,15 +46,14 @@ const Checkout = () => {
     { setSubmitting }: FormikHelpers<FormValuesProps>
   ) => {
     try {
-      console.log(values);
       const cartP = cartProducts.map((cartProd: cartProductType) => {
         return {
-          product: cartProd.id,
+          product: cartProd.product.id,
           quantity: cartProd.quantity,
         };
       });
 
-      const res = await getCheckoutSession({
+      const { data }: any = await getCheckoutSession({
         shippingInfo: {
           city: values.city,
           address: values.address,
@@ -70,10 +63,11 @@ const Checkout = () => {
         orderItems: cartP,
       });
 
-      console.log(res);
+      router.push(`${data.data.link}`);
       setSubmitting(false);
     } catch (error) {
       console.error(error);
+      toast.error("An Error Ocurred, Please try again later or contact support");
     }
   };
 
@@ -236,103 +230,6 @@ const Checkout = () => {
                         />
                       </Grid>
                     </Grid>
-
-                    {/* <Box css={paymentContainerCss}>
-                      <h2 css={sectionTitleCss}>Payment Details</h2>
-                      <h3 css={"margin:1rem 0"}>Payment Method</h3>
-                      <Grid container justifyContent="space-between" css={paymentMethodCss}>
-                        <Grid
-                          xs={12}
-                          sm={5.5}
-                          sx={{ margin: "1rem 0", paddingLeft: "3rem" }}
-                          css={methodCss(errors.paymentMethod && touched.paymentMethod)}
-                        >
-                          <FastField
-                            id="e-Money"
-                            htmlFor="e-Money"
-                            type="radio"
-                            name="paymentMethod"
-                            value="e-Money"
-                          />
-                          <label id="e-Money" htmlFor="e-Money">
-                            e-Money
-                          </label>
-                        </Grid>
-
-                        <Grid
-                          xs={12}
-                          sm={5.5}
-                          sx={{ margin: "1rem 0", paddingLeft: "3rem" }}
-                          css={methodCss(errors.paymentMethod && touched.paymentMethod)}
-                        >
-                          <FastField
-                            id="cash"
-                            htmlFor="cash"
-                            type="radio"
-                            name="paymentMethod"
-                            value="cash"
-                          />
-                          <label id="cash" htmlFor="cash">
-                            Cash on Delivery
-                          </label>
-                        </Grid>
-                      </Grid>
-
-                      {values.paymentMethod === "cash" ? (
-                        <Box css={cashOnDeliveryCss}>
-                          <Image src={cashOnDelivery} alt="cashOnDelivery" />
-                          <p>
-                            The ‘Cash on Delivery’ option enables you to pay in cash when our
-                            delivery courier arrives at your residence. Just make sure your address
-                            is correct so that your order will not be cancelled.
-                          </p>
-                        </Box>
-                      ) : (
-                        <Box
-                          css={`
-                            display: flex;
-                            justify-content: space-between;
-                            flex-wrap: wrap;
-                            margin-top: 3rem;
-                          `}
-                        >
-                          <Box>
-                            <label
-                              css={formLabelCss(
-                                touched.eMoneyNumber && Boolean(errors.eMoneyNumber)
-                              )}
-                              htmlFor="eMoneyNumber"
-                            >
-                              e-Money Number
-                            </label>
-                            <TextField
-                              css={textFieldCss}
-                              id="eMoneyNumber"
-                              name="eMoneyNumber"
-                              placeholder="238521993"
-                              value={values.eMoneyNumber}
-                              onChange={handleChange}
-                            />
-                          </Box>
-                          <Box>
-                            <label
-                              css={formLabelCss(touched.eMoneyPin && Boolean(errors.eMoneyPin))}
-                              htmlFor="eMoneyPin"
-                            >
-                              e-Money Pin
-                            </label>
-                            <TextField
-                              css={textFieldCss}
-                              id="eMoneyPin"
-                              name="eMoneyPin"
-                              placeholder="7786"
-                              value={values.eMoneyPin}
-                              onChange={handleChange}
-                            />
-                          </Box>
-                        </Box>
-                      )}
-                    </Box> */}
                   </Grid>
 
                   <Grid
@@ -384,8 +281,8 @@ const Checkout = () => {
                         <h2>GRAND TOTAL </h2>
                         <h1 className="grandTotal">$ {grandTotalPrice}</h1>
                       </span>
-                      <button type="submit" disabled={isSubmitting}>
-                        CONTINUE
+                      <button type="submit" disabled={isSubmitting || isLoading}>
+                        {isLoading || isSubmitting ? "LOADING" : "CHECKOUT"}
                       </button>
                     </Box>
                   </Grid>

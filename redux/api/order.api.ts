@@ -11,7 +11,7 @@ export const ordersApi = createApi({
 
   endpoints: (builder) => ({
     getCheckoutSession: builder.mutation<any, OrderProps>({
-      query: (order) => ({ url: "/", method: "POST", data: order }),
+      query: (order) => ({ url: "/checkout-session", method: "POST", data: order }),
     }),
 
     getMyOrders: builder.query<any, void>({
