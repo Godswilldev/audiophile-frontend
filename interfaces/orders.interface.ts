@@ -6,22 +6,12 @@ export enum OrderStatus {
   delivered = "delivered",
 }
 
+interface OrderProducts {
+  product: string;
+  quantity: number;
+}
+
 export interface OrderProps {
-  orderItems: [
-    {
-      product: { id: string; slug: string; name: string; price: number; image: string };
-      quantity: number;
-    }
-  ];
-
-  user: { firstname: string; lastname: string; id: string; photo: string; email: string };
-  shippingInfo: { address: string; city: string; country: string; zipCode: string };
-
-  orderedAt: Date;
-  orderStatus: OrderStatus;
-  deliveredAt: Date;
-
-  shippingFee: number;
-  productsTotal: number;
-  grandTotal: number;
+  orderItems: OrderProducts[];
+  shippingInfo: { address: string; city: string; country: string; zipCode: string | number };
 }

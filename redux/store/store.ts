@@ -8,6 +8,7 @@ import { setAuthUser } from "redux/reducers/auth.reducer";
 import { setProducts } from "redux/reducers/productsReducer";
 import storageSession from "redux-persist/lib/storage/session";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { ordersApi } from "redux/api/order.api";
 
 const persistConfig = {
   key: "root",
@@ -25,7 +26,8 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
       authApi.middleware,
-      productsApi.middleware
+      productsApi.middleware,
+      ordersApi.middleware
     ),
 });
 

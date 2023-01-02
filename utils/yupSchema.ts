@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 
 export const CheckoutSchema = Yup.object().shape({
-  paymentMethod: Yup.string().required("A Option is required"),
+  // paymentMethod: Yup.string().required("A Option is required"),
   email: Yup.string().email("Wrong Format").required("Required"),
   fullName: Yup.string().min(3, "Name Too Short!").max(50, "Name Too Long!").required("Required"),
 

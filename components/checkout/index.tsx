@@ -1,14 +1,15 @@
 import Image from "next/image";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Unstable_Grid2";
 import { useRouter } from "next/router";
+import Grid from "@mui/material/Unstable_Grid2";
 import TextField from "@mui/material/TextField";
 import Container from "@mui/material/Container";
 import { CheckoutSchema } from "utils/yupSchema";
 import { useAppSelector } from "redux/store/store";
+import { cartProductType } from "interfaces/interfaces";
+import { FormValuesProps } from "interfaces/form.interface";
 import cashOnDelivery from "assets/cart/cash on delivery.png";
 import { Formik, Form, FormikHelpers, FastField } from "formik";
-import { cartProductType } from "interfaces/interfaces";
 import { getTotalPrice, grandTotal, shipping, vat } from "redux/reducers/cartReducer";
 import {
   methodCss,
@@ -23,7 +24,8 @@ import {
   checkoutContainer,
   paymentContainerCss,
 } from "components/checkout/style";
-import { FormValuesProps } from "interfaces/form.interface";
+import { useGetCheckoutSessionMutation } from "redux/api/order.api";
+import { OrderProps } from "interfaces/orders.interface";
 
 const Checkout = () => {
   const router = useRouter();
@@ -33,27 +35,46 @@ const Checkout = () => {
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
   const { cartProducts } = useAppSelector(({ cartReducer }) => cartReducer);
   const grandTotalPrice = useAppSelector(() => grandTotal(total, vatPrice, shippingPrice));
+  const [getCheckoutSession, { isLoading, data, isError }] = useGetCheckoutSessionMutation();
 
   const initialvalues: FormValuesProps = {
     fullName: "",
     email: "",
-    phoneNumber: undefined,
+    phoneNumber: null,
     address: "",
-    zipCode: undefined,
+    zipCode: "",
     city: "",
     country: "",
-    paymentMethod: "cash",
-    eMoneyNumber: undefined,
-    eMoneyPin: undefined,
   };
 
   const handleSubmit = async (
     values: FormValuesProps,
     { setSubmitting }: FormikHelpers<FormValuesProps>
   ) => {
-    await sleep(1000);
-    alert(JSON.stringify(values, null, 2));
-    setSubmitting(false);
+    try {
+      console.log(values);
+      const cartP = cartProducts.map((cartProd: cartProductType) => {
+        return {
+          product: cartProd.id,
+          quantity: cartProd.quantity,
+        };
+      });
+
+      const res = await getCheckoutSession({
+        shippingInfo: {
+          city: values.city,
+          address: values.address,
+          country: values.country,
+          zipCode: values.zipCode,
+        },
+        orderItems: cartP,
+      });
+
+      console.log(res);
+      setSubmitting(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -216,7 +237,7 @@ const Checkout = () => {
                       </Grid>
                     </Grid>
 
-                    <Box css={paymentContainerCss}>
+                    {/* <Box css={paymentContainerCss}>
                       <h2 css={sectionTitleCss}>Payment Details</h2>
                       <h3 css={"margin:1rem 0"}>Payment Method</h3>
                       <Grid container justifyContent="space-between" css={paymentMethodCss}>
@@ -311,7 +332,7 @@ const Checkout = () => {
                           </Box>
                         </Box>
                       )}
-                    </Box>
+                    </Box> */}
                   </Grid>
 
                   <Grid

@@ -3,10 +3,7 @@ export interface FormValuesProps {
   email: string;
   phoneNumber: number | null | undefined;
   address: string;
-  zipCode: number | null | undefined;
+  zipCode: string | number;
   city: string;
   country: string;
-  paymentMethod: string;
-  eMoneyNumber: null | undefined;
-  eMoneyPin: null | undefined;
 }
