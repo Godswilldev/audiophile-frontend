@@ -14,7 +14,6 @@ export const ordersApi = createApi({
       query: (order) => ({ url: "/flutterwave-checkout-session", method: "POST", data: order }),
     }),
 
-
     getPaystackCheckoutSession: builder.mutation<any, OrderProps>({
       query: (order) => ({ url: "/paystack-checkout-session", method: "POST", data: order }),
     }),
@@ -26,6 +25,7 @@ export const ordersApi = createApi({
 
     getOneOrder: builder.query<any, string>({
       query: (orderId) => ({ url: `/${orderId}`, method: "GET" }),
+      transformResponse: (response: { data: any }) => response.data,
       providesTags: ["Orders"],
     }),
   }),
