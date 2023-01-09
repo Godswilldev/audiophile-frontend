@@ -19,7 +19,7 @@ import {
   sectionTitleCss,
   checkoutContainer,
 } from "components/checkout/style";
-import { useGetCheckoutSessionMutation } from "redux/api/order.api";
+import { useGetPaystackCheckoutSessionMutation } from "redux/api/order.api";
 import toast from "react-hot-toast";
 
 const Checkout = () => {
@@ -29,7 +29,7 @@ const Checkout = () => {
   const shippingPrice = useAppSelector(shipping);
   const { cartProducts } = useAppSelector(({ cartReducer }) => cartReducer);
   const grandTotalPrice = useAppSelector(() => grandTotal(total, vatPrice, shippingPrice));
-  const [getCheckoutSession, { isLoading }] = useGetCheckoutSessionMutation();
+  const [getCheckoutSession, { isLoading }] = useGetPaystackCheckoutSessionMutation();
 
   const initialvalues: FormValuesProps = {
     fullName: "",

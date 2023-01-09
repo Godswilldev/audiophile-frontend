@@ -10,15 +10,19 @@ export const ordersApi = createApi({
   baseQuery: axiosBaseQuery({ baseUrl: "/orders" }),
 
   endpoints: (builder) => ({
-    getCheckoutSession: builder.mutation<any, OrderProps>({
-      query: (order) => ({ url: "/checkout-session", method: "POST", data: order }),
+    getFlutterwaveCheckoutSession: builder.mutation<any, OrderProps>({
+      query: (order) => ({ url: "/flutterwave-checkout-session", method: "POST", data: order }),
+    }),
+
+
+    getPaystackCheckoutSession: builder.mutation<any, OrderProps>({
+      query: (order) => ({ url: "/paystack-checkout-session", method: "POST", data: order }),
     }),
 
     getMyOrders: builder.query<any, void>({
       query: () => ({ url: "/my-orders", method: "GET" }),
       providesTags: ["Orders"],
     }),
-
 
     getOneOrder: builder.query<any, string>({
       query: (orderId) => ({ url: `/${orderId}`, method: "GET" }),
@@ -28,4 +32,9 @@ export const ordersApi = createApi({
 });
 
 // Export hooks for usage in functional components
-export const { useGetCheckoutSessionMutation, useGetMyOrdersQuery, useGetOneOrderQuery } = ordersApi;
+export const {
+  useGetFlutterwaveCheckoutSessionMutation,
+  useGetPaystackCheckoutSessionMutation,
+  useGetMyOrdersQuery,
+  useGetOneOrderQuery,
+} = ordersApi;
