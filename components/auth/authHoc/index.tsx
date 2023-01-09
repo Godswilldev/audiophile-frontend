@@ -24,7 +24,7 @@ const withAuth = (Component: any) => {
           });
           dispatch(setAuthUser({ jwt: data.token, user: data.data }));
         } catch (err) {
-          toast.error("You must login or signup to checkout");
+          toast.error("Please Login First");
           router.push("/auth/login");
         }
       })();
