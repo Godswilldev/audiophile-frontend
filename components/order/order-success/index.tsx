@@ -4,14 +4,17 @@ import { useGetOneOrderQuery } from "redux/api/order.api";
 
 const OrderSuccess = () => {
   const router = useRouter();
-  console.log(router?.query?.txRef);
+
+  console.log(router?.query?.trxref);
+
+  // "https://audiophi.vercel.app/user/order/order-success?trxref=rlmolwpd4n&reference=rlmolwpd4n";
 
   const {
     data: order,
     isLoading,
     isError,
-  } = useGetOneOrderQuery(router.query.txRef as string, {
-    skip: router.query.txRef === undefined,
+  } = useGetOneOrderQuery(router.query.trxref as string, {
+    skip: router.query.trxref === undefined,
   });
 
   console.log(order);

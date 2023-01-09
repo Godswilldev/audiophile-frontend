@@ -62,8 +62,7 @@ const Checkout = () => {
         },
         orderItems: cartP,
       });
-      console.log(data);
-      router.push(`${data.data.link}`);
+      router.push(`${data.data.authorization_url}`);
       setSubmitting(false);
     } catch (error) {
       console.error(error);
