@@ -62,7 +62,7 @@ const Checkout = () => {
         },
         orderItems: cartP,
       });
-
+      console.log(data);
       router.push(`${data.data.link}`);
       setSubmitting(false);
     } catch (error) {
