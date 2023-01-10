@@ -25,6 +25,7 @@ import {
 import { useGetOneProductQuery } from "redux/api/products.api";
 
 const ProductDetail = () => {
+  useTitle("Audiophile | Product Details");
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [quantity, setQuantity] = useState<number>(1);
