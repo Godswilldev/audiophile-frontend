@@ -9,4 +9,5 @@ const OrderSuccess = dynamic(() => import("components/order/order-success"), {
 
 const OrderSuccessModule: NextPage = () => <OrderSuccess />;
 
-export default withAuth(OrderSuccessModule);
+// export default withAuth(OrderSuccessModule);
+export default OrderSuccessModule;

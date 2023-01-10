@@ -1,4 +1,5 @@
 import { colors } from "utils/theme";
+import { CSSProperties } from "react";
 import { buttonCss } from "components/buttons/style";
 
 interface ButtonProps {
@@ -12,11 +13,12 @@ interface ButtonProps {
     | "BORDERLESS_COLOURED";
   onClick?(): void;
   type?: "submit" | "button" | "reset";
-  disabled?:boolean;
+  disabled?: boolean;
+  style?: CSSProperties;
 }
 
-const Button = ({ text, variant, onClick, type ,disabled}: ButtonProps) => (
-  <button type={type} disabled={disabled} onClick={onClick} css={buttonCss(variant)}>
+const Button = ({ text, variant, style, onClick, type, disabled }: ButtonProps) => (
+  <button style={style} type={type} disabled={disabled} onClick={onClick} css={buttonCss(variant)}>
     {text}
     {variant === "BORDERLESS_BLACK" ||
       (variant === "BORDERLESS_COLOURED" && (
