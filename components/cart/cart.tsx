@@ -60,7 +60,7 @@ const Cart = ({ setOpen }: closeCart) => {
                   />
                   <span>
                     <h1>{product.product.name}</h1>
-                    <h2>${product.product.price}</h2>
+                    <h2>₦{product.product.price}</h2>
                   </span>
                 </Box>
 
@@ -81,7 +81,7 @@ const Cart = ({ setOpen }: closeCart) => {
           <Box className="cart__total">
             <span>
               <h2>TOTAL </h2>
-              <h1>$ {total}</h1>
+              <h1>₦ {total}</h1>
             </span>
             <button
               onClick={() => {
