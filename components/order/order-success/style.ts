@@ -42,7 +42,6 @@ export const emailConfCss = css`
 
 export const productListCss = css`
   height: 27rem;
-  /* width: 44.4rem; */
   border-radius: 0.8rem;
   margin: 3rem 0;
   overflow: hidden;

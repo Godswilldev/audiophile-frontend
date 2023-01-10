@@ -1,27 +1,29 @@
 import React from "react";
+import Image from "next/image";
 import Box from "@mui/material/Box";
+import { useTitle } from "react-use";
 import { useRouter } from "next/router";
+import Button from "components/buttons";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Unstable_Grid2";
+import Typography from "@mui/material/Typography";
+import CheckIcon from "@mui/icons-material/Check";
 import { useGetOneOrderQuery } from "redux/api/order.api";
 import {
-  checkMarkCss,
-  emailConfCss,
   gtCss,
-  orderSuccessCss,
-  productListCss,
-  thankYouCss,
-  gtPriceCss,
-  productItemCss,
   orderCss,
   priceCss,
+  gtPriceCss,
+  thankYouCss,
+  checkMarkCss,
+  emailConfCss,
+  productListCss,
+  productItemCss,
+  orderSuccessCss,
 } from "components/order/order-success/style";
-import CheckIcon from "@mui/icons-material/Check";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Unstable_Grid2";
-import Button from "components/buttons";
-import Image from "next/image";
-import Container from "@mui/material/Container";
 
 const OrderSuccess = () => {
+  useTitle("ORDER SUCCESS");
   const router = useRouter();
 
   const { data: order } = useGetOneOrderQuery(router.query.trxref as string, {
