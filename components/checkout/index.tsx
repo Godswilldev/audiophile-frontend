@@ -252,7 +252,7 @@ const Checkout = () => {
                             />
                             <span>
                               <h1>{product.product.name}</h1>
-                              <h2>${product.product.price}</h2>
+                              <h2>₦{product.product.price}</h2>
                             </span>
                           </Box>
 
@@ -266,19 +266,19 @@ const Checkout = () => {
                     <Box className="cart__total">
                       <span>
                         <h2>TOTAL </h2>
-                        <h1>$ {total}</h1>
+                        <h1>₦ {total}</h1>
                       </span>
                       <span>
                         <h2>SHIPPING </h2>
-                        <h1>$ {shippingPrice}</h1>
+                        <h1>₦ {shippingPrice}</h1>
                       </span>
                       <span>
                         <h2>VAT (INCLUDED) </h2>
-                        <h1>$ {vatPrice}</h1>
+                        <h1>₦ {vatPrice}</h1>
                       </span>
                       <span>
                         <h2>GRAND TOTAL </h2>
-                        <h1 className="grandTotal">$ {grandTotalPrice}</h1>
+                        <h1 className="grandTotal">₦ {grandTotalPrice}</h1>
                       </span>
                       <button type="submit" disabled={isSubmitting || isLoading}>
                         {isLoading || isSubmitting ? "LOADING" : "CHECKOUT"}

@@ -43,14 +43,14 @@ export const getTotalPrice = (state: RootState) =>
 export const shipping = (state: RootState) =>
   state.cartReducer.cartProducts.reduce(
     (acc, next, _, array) =>
-      Math.round(((acc += next.quantity * next.product.price) * array.length) / 100),
+      Math.round(((acc += next.quantity * next.product.price) * array.length) / 10),
     0
   );
 
 export const vat = (state: RootState) =>
   state.cartReducer.cartProducts.reduce(
     (acc: number, next: { quantity: number; product: { price: number } }) =>
-      Math.round((acc += next.quantity * next.product.price) * 0.01),
+      Math.round((acc += next.quantity * next.product.price) * 0.1),
     0
   );
 

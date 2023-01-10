@@ -92,7 +92,7 @@ const ProductDetail = () => {
           {product?.new && <h3>New Product</h3>}
           <h1>{product?.name}</h1>
           <p>{product?.description}</p>
-          <h6>${product?.price}</h6>
+          <h6>₦{product?.price}</h6>
 
           <span onClick={addProductToCart}>
             <Button text="add to cart" variant="PINK_DARK" />
