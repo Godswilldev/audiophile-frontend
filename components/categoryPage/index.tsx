@@ -8,12 +8,15 @@ import CategoryGroup from "components/categoryGroup";
 import CategoryProduct from "components/categoryProduct/categoryProduct";
 import { categoryPageCss, categoryHeaderCss } from "components/categoryPage/style";
 
-const Category = () => {
+const Category = (products: any) => {
+  console.log(products.products);
   const location = useLocation();
   const routeName = location?.pathname?.slice(1);
   useTitle(`${routeName?.toUpperCase()} | AUDIOPHILE`);
-  const { products } = useAppSelector(({ productsReducer }) => productsReducer);
-  const category = products.filter((product: ProductProps) => product.category === routeName);
+  // const { products } = useAppSelector(({ productsReducer }) => productsReducer);
+  const category = products.products.filter(
+    (product: ProductProps) => product.category === routeName
+  );
 
   return (
     <Box css={categoryPageCss}>
@@ -23,7 +26,7 @@ const Category = () => {
 
       <Container sx={{ maxWidth: { xs: "lg", xl: "xl" } }}>
         <Box>
-          {category.map((cat, idx) => (
+          {category.map((cat: ProductProps, idx: number) => (
             <Box key={cat.id}>
               <CategoryProduct idx={idx} cat={cat} />
             </Box>

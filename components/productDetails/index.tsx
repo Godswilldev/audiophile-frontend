@@ -24,20 +24,20 @@ import {
 } from "components/productDetails/style";
 import { useGetOneProductQuery } from "redux/api/products.api";
 
-const ProductDetail = () => {
+const ProductDetail = (product: any) => {
   useTitle("Audiophile | Product Details");
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [quantity, setQuantity] = useState<number>(1);
   const { cartProducts } = useAppSelector(({ cartReducer }) => cartReducer);
 
-  const {
-    data: product,
-    isLoading,
-    isError,
-  } = useGetOneProductQuery(router.query?.productDetails as string, {
-    skip: router.isFallback || router.query.productDetails === undefined,
-  });
+  // const {
+  //   data: product,
+  //   isLoading,
+  //   isError,
+  // } = useGetOneProductQuery(router.query?.productDetails as string, {
+  //   skip: router.isFallback || router.query.productDetails === undefined,
+  // });
 
   useEffect(() => setQuantity(quantity), [router, quantity]);
 
@@ -63,9 +63,7 @@ const ProductDetail = () => {
     }
   };
 
-  return isLoading || product === undefined || isError ? (
-    <PageLoader />
-  ) : (
+  return (
     <Container sx={{ maxWidth: { xs: "lg", xl: "xl" } }} css={productCss}>
       <h1 onClick={() => router.back()} css={goBackButton}>
         Go Back
