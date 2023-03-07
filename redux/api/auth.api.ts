@@ -1,6 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { VerifyEmailProps } from "components/auth/verify-email";
 import { axiosBaseQuery } from "redux/api/axiosBaseQuery";
+import { HYDRATE } from "next-redux-wrapper";
 import {
   EmailProps,
   CreateUserProps,
@@ -14,6 +15,12 @@ export const authApi = createApi({
   tagTypes: ["Auth"],
 
   baseQuery: axiosBaseQuery({ baseUrl: "/auth" }),
+
+  extractRehydrationInfo(action, { reducerPath }) {
+    if (action.type === HYDRATE) {
+      return action.payload[reducerPath];
+    }
+  },
 
   endpoints: (builder) => ({
     // done
@@ -46,6 +53,11 @@ export const authApi = createApi({
       invalidatesTags: ["Auth"],
     }),
 
+    verifyUserJwt: builder.query<any, void>({
+      query: () => ({ url: "/verify-cookie", method: "get" }),
+      providesTags: ["Auth"],
+    }),
+
     // done
     forgotPassword: builder.mutation<any, EmailProps>({
       query: (email) => ({ method: "patch", url: "/forgot-password", data: email }),
@@ -73,4 +85,8 @@ export const {
   useResendEmailTokenMutation,
   useResendForgotPasswordCodeMutation,
   useResetPasswordMutation,
+  useVerifyUserJwtQuery,
+  util: { getRunningOperationPromises },
 } = authApi;
+
+export const { verifyUserJwt } = authApi.endpoints;

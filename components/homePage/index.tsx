@@ -20,12 +20,12 @@ const mobileMarginCss = css`
   }
 `;
 
-const Home = () => {
+const Home = ({ products }: any) => {
   useTitle("AUDIOPHILE | One Stop Audio Store");
 
   return (
     <Box>
-      <HeaderCarousel />
+      <HeaderCarousel products={products} />
 
       <Container sx={{ maxWidth: { xs: "lg", xl: "xl" } }}>
         <Box css={marginCss}>

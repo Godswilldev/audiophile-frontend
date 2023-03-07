@@ -15,7 +15,7 @@ export interface AuthUserState {
 }
 
 export const setAuth = (state: AuthUserState, action: PayloadAction<AuthUserState>) => {
-  localStorage.setItem("jwt", JSON.stringify(action.payload.jwt));
+  typeof window != "undefined" && localStorage.setItem("jwt", JSON.stringify(action.payload.jwt));
   state.jwt = action.payload.jwt;
   state.user = action.payload.user;
 };

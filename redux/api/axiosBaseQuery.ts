@@ -33,7 +33,7 @@ export const axiosBaseQuery =
         data,
         params,
         headers: {
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem("jwt") as string)}`,
+          Authorization: `Bearer `,
         },
         withCredentials: true,
       });

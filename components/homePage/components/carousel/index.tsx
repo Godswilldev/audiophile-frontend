@@ -7,7 +7,6 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Button from "components/buttons";
 import Container from "@mui/material/Container";
-import { useAppSelector } from "redux/store/store";
 import { ProductProps } from "interfaces/products";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper";
@@ -18,9 +17,7 @@ import {
   headerTextCss,
 } from "components/homePage/components/carousel/style";
 
-export function HeaderCarousel() {
-  const { products } = useAppSelector(({ productsReducer }) => productsReducer);
-
+export function HeaderCarousel({ products }: any) {
   const newProducts = products?.filter((p: ProductProps) => p.new === true);
 
   return (
